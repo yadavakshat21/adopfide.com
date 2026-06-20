@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Early Access — Adopfide Technologies</title>
+<meta name="description" content="Reserve your place in the Adopfide ecosystem before the world finds out. Founding member benefits, priority enrollment, and direct team access.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== SHARED DESIGN SYSTEM (inlined) ===== */
+/* ============================================================
+   ADOPFIDE TECHNOLOGIES — SHARED DESIGN SYSTEM
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:     #080808;
+  --white:     #ffffff;
+  --red:       #cc1a1a;
+  --red-deep:  #a01212;
+  --surface:   #101010;
+  --surface2:  #161616;
+  --surface3:  #1e1e1e;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.13);
+  --t1:        #f0f0f0;
+  --t2:        #888888;
+  --t3:        #444444;
+  --font-d:    'Syne', sans-serif;
+  --font-b:    'Inter', sans-serif;
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--black);
+  color: var(--t1);
+  font-family: var(--font-b);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor-dot, #cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity .3s;
+}
+#cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--red);
+  top: 0; left: 0;
+}
+#cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(204,26,26,0.5);
+  top: 0; left: 0;
+  transition: width .25s var(--ease), height .25s var(--ease), border-color .25s;
+}
+body.cursor-hover #cursor-ring {
+  width: 52px; height: 52px;
+  border-color: rgba(204,26,26,0.8);
+}
+@media (hover: none) { #cursor-dot, #cursor-ring { display: none; } }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 52px; height: 68px;
+  background: rgba(8,8,8,0.82);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--border);
+  transition: border-color .4s;
+}
+.nav.scrolled { border-bottom-color: rgba(255,255,255,0.11); }
+
+.nav-logo {
+  font-family: var(--font-d);
+  font-size: 23px; font-weight: 800;
+  letter-spacing: -.4px; color: var(--white);
+  text-decoration: none; user-select: none;
+}
+.nav-logo .r { color: var(--red); }
+
+.nav-right { display: flex; align-items: center; gap: 20px; }
+
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a {
+  font-size: 13.5px; font-weight: 500; color: var(--t2);
+  text-decoration: none; letter-spacing: .1px;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+.launch-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 14px 6px 10px;
+  background: rgba(204,26,26,0.08);
+  border: 1px solid rgba(204,26,26,0.22);
+  border-radius: 100px;
+  font-size: 11.5px; font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: .4px;
+  white-space: nowrap;
+}
+.pulse-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%; background: var(--red);
+  position: relative; flex-shrink: 0;
+}
+.pulse-dot::after {
+  content: ''; position: absolute; inset: -3px;
+  border-radius: 50%; border: 1px solid var(--red);
+  animation: pulseRing 2.2s ease-out infinite;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(.6); opacity: .9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ── BUTTONS ── */
+.btn-red {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 30px;
+  background: var(--red); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: var(--font-b); font-size: 14.5px; font-weight: 600;
+  cursor: pointer; text-decoration: none; letter-spacing: .1px;
+  position: relative; overflow: hidden;
+  transition: background .25s, transform .22s var(--ease), box-shadow .25s;
+}
+.btn-red::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.1), transparent);
+}
+.btn-red:hover {
+  background: var(--red-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(204,26,26,0.28);
+}
+.btn-red:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 26px;
+  background: transparent; color: var(--t2);
+  border: 1px solid var(--border2); border-radius: 10px;
+  font-family: var(--font-b); font-size: 14.5px; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  transition: border-color .25s, color .25s, transform .22s var(--ease);
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.3); color: var(--white); transform: translateY(-2px); }
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  width: 100%; overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  background: var(--surface);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.marquee-track {
+  display: flex; gap: 0;
+  animation: marqueeScroll 28s linear infinite;
+  width: max-content;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 0 36px;
+  font-family: var(--font-d); font-size: 13px; font-weight: 600;
+  color: var(--t3); letter-spacing: 1.5px; text-transform: uppercase;
+  white-space: nowrap;
+}
+.marquee-item .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--red); opacity: .6; flex-shrink: 0;
+}
+
+/* ── SECTION COMMONS ── */
+.section { padding: 108px 52px; max-width: 1180px; margin: 0 auto; }
+.section-full { padding: 108px 52px; }
+
+.s-tag {
+  display: inline-block;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--red); margin-bottom: 18px;
+}
+.s-title {
+  font-family: var(--font-d);
+  font-size: clamp(30px, 4.5vw, 54px);
+  font-weight: 800; letter-spacing: -1.2px;
+  color: var(--white); line-height: 1.04;
+  margin-bottom: 18px;
+}
+.s-sub {
+  font-size: 16.5px; color: var(--t2);
+  line-height: 1.74; max-width: 540px;
+}
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 0 52px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .75s var(--ease), transform .75s var(--ease); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 52px 52px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 22px;
+}
+.footer-logo {
+  font-family: var(--font-d); font-size: 20px; font-weight: 800;
+  color: var(--white); letter-spacing: -.3px;
+}
+.footer-logo .r { color: var(--red); }
+.footer-links { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+.footer-links a {
+  font-size: 13px; color: var(--t3); text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--t2); }
+.footer-copy { font-size: 12px; color: var(--t3); text-align: center; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .section { padding: 72px 20px; }
+  .section-full { padding: 72px 20px; }
+  .divider { margin: 0 20px; }
+  .site-footer { padding: 40px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .pulse-dot::after { animation: none; }
+}
+
+</style>
+<style>
+.page-hero {
+  min-height: 60vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 60px;
+  position: relative; overflow: hidden;
+}
+.page-hero-glow {
+  position: absolute; width: 700px; height: 500px;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(204,26,26,0.1), transparent 70%);
+  pointer-events: none;
+}
+.page-hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+  pointer-events: none;
+}
+.ph-inner { position: relative; z-index: 2; }
+.ph-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--red); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .7s var(--ease) .1s forwards;
+}
+.ph-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 6vw, 72px); font-weight: 800;
+  letter-spacing: -2px; line-height: .98; color: var(--white);
+  margin-bottom: 22px;
+  opacity: 0; animation: fadeUp .8s var(--ease) .22s forwards;
+}
+.ph-h1 .red { color: var(--red); }
+.ph-sub {
+  font-size: clamp(15px, 1.8vw, 17.5px); color: var(--t2);
+  max-width: 520px; margin: 0 auto; line-height: 1.76;
+  opacity: 0; animation: fadeUp .8s var(--ease) .35s forwards;
+}
+
+/* BENEFITS STRIP */
+.benefits-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; margin-bottom: 60px;
+}
+.benefit-item {
+  background: var(--surface2); padding: 32px 28px;
+  transition: background .25s;
+}
+.benefit-item:hover { background: var(--surface3); }
+.benefit-num {
+  font-family: var(--font-d); font-size: 36px; font-weight: 800;
+  color: var(--red); letter-spacing: -1px; margin-bottom: 8px;
+}
+.benefit-label { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.benefit-desc { font-size: 12.5px; color: var(--t3); line-height: 1.5; }
+
+/* FORM CARD */
+.form-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 22px; padding: 64px 72px;
+  max-width: 680px; margin: 0 auto 80px;
+  position: relative; overflow: hidden;
+}
+.form-card::before {
+  content: ''; position: absolute;
+  top: -80px; right: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(204,26,26,0.05);
+  filter: blur(40px);
+  pointer-events: none;
+}
+.form-title {
+  font-family: var(--font-d); font-size: 28px; font-weight: 800;
+  letter-spacing: -.6px; color: var(--white); margin-bottom: 8px;
+}
+.form-sub { font-size: 14px; color: var(--t2); margin-bottom: 36px; line-height: 1.6; }
+
+.field-group { display: flex; flex-direction: column; gap: 13px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+
+.field-label {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .5px; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 6px; display: block;
+}
+.field-wrap { display: flex; flex-direction: column; }
+
+.f-input, .f-select {
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 10px; padding: 13px 16px;
+  font-family: var(--font-b); font-size: 14.5px;
+  color: var(--white); outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  width: 100%;
+}
+.f-input::placeholder { color: var(--t3); }
+.f-input:focus, .f-select:focus {
+  border-color: rgba(204,26,26,.45);
+  box-shadow: 0 0 0 3px rgba(204,26,26,.08);
+}
+.f-select {
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 40px;
+}
+.f-select option { background: var(--surface2); color: var(--white); }
+
+.submit-btn {
+  width: 100%; padding: 15px;
+  background: var(--red); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: var(--font-b); font-size: 15.5px; font-weight: 600;
+  cursor: pointer; margin-top: 6px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  position: relative; overflow: hidden;
+  transition: background .25s, transform .22s var(--ease), box-shadow .25s;
+}
+.submit-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.1), transparent);
+}
+.submit-btn:hover {
+  background: var(--red-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(204,26,26,.3);
+}
+.submit-btn:active { transform: translateY(0); }
+.form-fine { font-size: 12px; color: var(--t3); text-align: center; margin-top: 14px; }
+
+#success-block {
+  display: none; flex-direction: column;
+  align-items: center; gap: 14px; text-align: center;
+}
+.success-ring {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(204,26,26,.1);
+  border: 1px solid rgba(204,26,26,.28);
+  display: flex; align-items: center; justify-content: center;
+}
+#success-block h3 {
+  font-family: var(--font-d); font-size: 22px;
+  font-weight: 800; letter-spacing: -.3px;
+}
+#success-block p { font-size: 14px; color: var(--t2); max-width: 380px; line-height: 1.65; }
+
+/* VISION SECTION */
+.vision-section { scroll-margin-top: 80px; }
+.vision-content {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: start;
+}
+.vision-big-text {
+  font-family: var(--font-d); font-size: clamp(32px, 4vw, 50px);
+  font-weight: 800; letter-spacing: -1.5px; color: var(--white);
+  line-height: 1.05; margin-bottom: 24px;
+}
+.vision-big-text .red { color: var(--red); }
+.vision-paras { display: flex; flex-direction: column; gap: 18px; }
+.vision-para { font-size: 15.5px; color: var(--t2); line-height: 1.8; }
+.vision-para strong { color: var(--t1); font-weight: 600; }
+
+/* Timeline */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: flex; gap: 20px; padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-num {
+  font-family: var(--font-d); font-size: 12px; font-weight: 800;
+  color: var(--red); letter-spacing: 1px; flex-shrink: 0; width: 28px; padding-top: 2px;
+}
+.tl-body {}
+.tl-title { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
+.tl-desc { font-size: 13px; color: var(--t3); line-height: 1.55; }
+
+@media (max-width: 900px) {
+  .benefits-strip { grid-template-columns: 1fr; }
+  .form-card { padding: 40px 24px; }
+  .field-row { grid-template-columns: 1fr; }
+  .vision-content { grid-template-columns: 1fr; gap: 36px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ad<span class="r">o</span>p<span class="r">f</span>ide</a>
+  <div class="nav-right">
+    <nav class="nav-links">
+      <a href="students.html">Students</a>
+      <a href="professionals.html">Professionals</a>
+      <a href="business-solutions.html">Business</a>
+    </nav>
+    <div class="launch-pill"><span class="pulse-dot"></span>Launching Soon</div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-glow" aria-hidden="true"></div>
+  <div class="page-hero-grid" aria-hidden="true"></div>
+  <div class="ph-inner">
+    <p class="ph-tag">Limited Early Access</p>
+    <h1 class="ph-h1">Get in before<br>the <span class="red">world</span> does.</h1>
+    <p class="ph-sub">Adopfide is extending early access to a select group of students, professionals, and business leaders who want to be part of something meaningful from day one.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <div class="benefits-strip reveal" data-stagger="0.1">
+    <div class="benefit-item">
+      <div class="benefit-num">01</div>
+      <div class="benefit-label">Priority Enrollment</div>
+      <div class="benefit-desc">First access to every program, cohort, and certification track at launch — before public registration opens.</div>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-num">02</div>
+      <div class="benefit-label">Founding Member Rates</div>
+      <div class="benefit-desc">Exclusive pricing locked in for life. Early members never pay standard rates — your commitment is recognised permanently.</div>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-num">03</div>
+      <div class="benefit-label">Direct Team Access</div>
+      <div class="benefit-desc">Early members get direct communication with the Adopfide core team — feedback, questions, and input that shapes the platform.</div>
+    </div>
+  </div>
+
+  <div class="form-card reveal">
+    <div id="form-content">
+      <h2 class="form-title">Reserve your place.</h2>
+      <p class="form-sub">Fill in the details below. No payment required, no commitment — just your intention to grow with something built for the future.</p>
+
+      <div class="field-group">
+        <div class="field-row">
+          <div class="field-wrap">
+            <label class="field-label" for="f-fname">First Name</label>
+            <input type="text" id="f-fname" class="f-input" placeholder="Your first name" autocomplete="given-name">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label" for="f-lname">Last Name</label>
+            <input type="text" id="f-lname" class="f-input" placeholder="Your last name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-email">Email Address</label>
+          <input type="email" id="f-email" class="f-input" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-phone">Phone Number (Optional)</label>
+          <input type="tel" id="f-phone" class="f-input" placeholder="+91 00000 00000" autocomplete="tel">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-persona">I am joining as</label>
+          <select id="f-persona" class="f-select">
+            <option value="" disabled selected>Select your journey</option>
+            <option value="student">Student — building skills for my future</option>
+            <option value="professional">Professional — advancing my career</option>
+            <option value="business">Business — transforming my organisation</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-goal">What is your primary goal?</label>
+          <select id="f-goal" class="f-select">
+            <option value="" disabled selected>Select a goal</option>
+            <option>Get hired in a tech role</option>
+            <option>Earn an industry certification</option>
+            <option>Change career paths</option>
+            <option>Upskill my team</option>
+            <option>Build or scale a business</option>
+            <option>Explore what Adopfide offers</option>
+          </select>
+        </div>
+        <button class="submit-btn hover-target" onclick="handleEASubmit()">
+          Secure My Early Access
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="form-fine">Your details are stored securely. We will reach out before launch with your access details.</p>
+      </div>
+    </div>
+
+    <div id="success-block">
+      <div class="success-ring">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#cc1a1a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>You are on the list.</h3>
+      <p>Welcome to Adopfide. We will be in touch before launch with your early access details and founding member benefits. Something meaningful is on its way.</p>
+      <a href="index.html" class="btn-ghost" style="margin-top: 8px;">Back to Home</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" id="vision">
+
+<!-- VISION STORY -->
+<section class="section vision-section" style="padding-bottom: 108px;">
+  <span class="s-tag">Our Story</span>
+
+  <div class="vision-content reveal">
+    <div>
+      <h2 class="vision-big-text">We are building the <span class="red">future</span> you deserve.</h2>
+      <div class="vision-paras">
+        <p class="vision-para">For years, people invested their trust, time, and hope into platforms that promised transformation — but delivered very little beyond recorded videos and printed certificates. <strong>That never felt right to us.</strong></p>
+        <p class="vision-para">The world is changing faster than any single course can keep up with. AI is transforming industries. Technology is redefining entire career categories. Businesses that refuse to evolve are being left behind at a pace no one predicted.</p>
+        <p class="vision-para"><strong>Adopfide is the answer to that gap.</strong> Not a course platform. Not a software vendor. An ecosystem — where learning connects to opportunity, technology enables real execution, and businesses gain a genuine advantage.</p>
+        <p class="vision-para">We are building quietly, carefully, and patiently — because meaningful infrastructure is never rushed. When the pillars align on a single platform, something genuinely powerful will emerge. And we want you there from the beginning.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item hover-target">
+        <div class="tl-num">01</div>
+        <div class="tl-body">
+          <div class="tl-title">AI &amp; Cloud Solutions</div>
+          <div class="tl-desc">Intelligent systems that help organisations automate decisions, predict outcomes, and scale operations.</div>
+        </div>
+      </div>
+      <div class="tl-item hover-target">
+        <div class="tl-num">02</div>
+        <div class="tl-body">
+          <div class="tl-title">Software &amp; Enterprise Products</div>
+          <div class="tl-desc">Production-grade CRM, LMS, payroll, and HR tools built for growing organisations.</div>
+        </div>
+      </div>
+      <div class="tl-item hover-target">
+        <div class="tl-num">03</div>
+        <div class="tl-body">
+          <div class="tl-title">Digital Transformation</div>
+          <div class="tl-desc">End-to-end strategy and execution for businesses entering the digital era with clarity.</div>
+        </div>
+      </div>
+      <div class="tl-item hover-target">
+        <div class="tl-num">04</div>
+        <div class="tl-body">
+          <div class="tl-title">Real-World Learning Ecosystems</div>
+          <div class="tl-desc">Practical, outcome-driven programs — not passive content libraries or recorded lectures.</div>
+        </div>
+      </div>
+      <div class="tl-item hover-target">
+        <div class="tl-num">05</div>
+        <div class="tl-body">
+          <div class="tl-title">Career Growth &amp; Mentorship</div>
+          <div class="tl-desc">Certifications, internships, job pathways, and mentorship that produce real outcomes.</div>
+        </div>
+      </div>
+      <div class="tl-item hover-target">
+        <div class="tl-num">06</div>
+        <div class="tl-body">
+          <div class="tl-title">Business Consultancy &amp; Innovation</div>
+          <div class="tl-desc">Strategic direction for startups and enterprises navigating an era defined by rapid change.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-logo">Ad<span class="r">o</span>p<span class="r">f</span>ide</div>
+  <nav class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="students.html">Students</a>
+    <a href="professionals.html">Professionals</a>
+    <a href="business-solutions.html">Business</a>
+    <a href="https://in.linkedin.com/company/adopfide" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:hello@adopfide.com">Contact</a>
+  </nav>
+  <p class="footer-copy">&copy; 2026 Adopfide Technologies Private Limited. All rights reserved.</p>
+</footer>
+
+<script>
+/* ===== SHARED JS (inlined) ===== */
+/* ── ADOPFIDE SHARED JS ── */
+(function () {
+  'use strict';
+
+  /* Custom cursor */
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = -200, my = -200, rx = -200, ry = -200;
+
+  if (dot && ring) {
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left  = mx + 'px';
+      dot.style.top   = my + 'px';
+    });
+    (function loop() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+    document.querySelectorAll('a, button, .pcard, .hover-target').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hover'); });
+    });
+  }
+
+  /* Nav scroll */
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('scrolled', window.scrollY > 48);
+    }, { passive: true });
+  }
+
+  /* Reveal on scroll */
+  const ro = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function (el) { ro.observe(el); });
+
+  /* Stagger children */
+  document.querySelectorAll('[data-stagger]').forEach(function (parent) {
+    const delay = parseFloat(parent.dataset.stagger) || 0.1;
+    Array.from(parent.children).forEach(function (child, i) {
+      child.style.transitionDelay = (i * delay) + 's';
+      child.classList.add('reveal');
+      ro.observe(child);
+    });
+  });
+
+})();
+
+</script>
+<script>
+function handleEASubmit() {
+  var fname  = document.getElementById('f-fname').value.trim();
+  var lname  = document.getElementById('f-lname').value.trim();
+  var email  = document.getElementById('f-email').value.trim();
+  var persona = document.getElementById('f-persona').value;
+  var goal   = document.getElementById('f-goal').value;
+  if (!fname || !lname) { document.getElementById('f-fname').focus(); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('f-email').focus(); return; }
+  if (!persona) { document.getElementById('f-persona').focus(); return; }
+  var leads = JSON.parse(localStorage.getItem('adopfide_ea') || '[]');
+  leads.push({ fname, lname, email, persona, goal, ts: new Date().toISOString() });
+  localStorage.setItem('adopfide_ea', JSON.stringify(leads));
+  document.getElementById('form-content').style.display = 'none';
+  var s = document.getElementById('success-block');
+  s.style.display = 'flex';
+}
+</script>
+</body>
+</html>
